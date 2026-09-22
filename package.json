@@ -1,0 +1,13 @@
+{
+  "name": "fallout",
+  "version": "0.3.0",
+  "description": "Guardián de blast-radius y arquitectura para revisar cambios de código antes de fusionarlos, construido para IBM Bob",
+  "type": "module",
+  "private": true,
+  "bin": { "guardian": "bin/guardian.mjs" },
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "guardian": "node bin/guardian.mjs"
+  },
+  "dependencies": { "yaml": "^2.5.0" }
+}
