@@ -23,7 +23,7 @@
   a { color: var(--blue); text-decoration: none; }
   :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
-  .inner { max-width: 1180px; margin: 0 auto; padding-left: clamp(20px, 5vw, 64px); padding-right: clamp(20px, 5vw, 64px); }
+  .inner { max-width: 1680px; margin: 0 auto; padding-left: clamp(24px, 5vw, 72px); padding-right: clamp(24px, 5vw, 72px); }
 
   /* nav */
   nav {
@@ -36,7 +36,7 @@
   nav .inner {
     display: flex; align-items: center; justify-content: space-between;
     padding-top: 20px; padding-bottom: 20px;
-    font-size: .8rem; letter-spacing: .03em;
+    font-size: .88rem; letter-spacing: .03em;
   }
   .word { font-weight: 800; font-size: 1.05rem; }
   .navlinks { display: flex; gap: clamp(16px, 3vw, 30px); }
@@ -51,14 +51,14 @@
   }
   .mark {
     font-weight: 800;
-    font-size: clamp(1.8rem, 4.2vw, 2.8rem);
+    font-size: clamp(1.8rem, 4.2vw, 3.2rem);
     letter-spacing: -.01em;
     color: var(--blue);
     margin: 0 0 clamp(24px, 5vh, 44px);
   }
   h1.lede {
     font-weight: 800;
-    font-size: clamp(2.6rem, 8vw, 6rem);
+    font-size: clamp(2.6rem, 8.5vw, 6.8rem);
     line-height: .96;
     letter-spacing: -.02em;
     margin: 0 0 14px;
@@ -68,7 +68,7 @@
   .subline {
     border-top: 1px solid var(--blue-line);
     padding-top: 12px;
-    font-size: clamp(.95rem, 1.6vw, 1.15rem);
+    font-size: clamp(.95rem, 1.6vw, 1.3rem);
     color: var(--blue-soft);
     max-width: 28ch;
     margin: 0 0 clamp(40px, 8vh, 80px);
@@ -77,10 +77,10 @@
     display: flex; justify-content: space-between; align-items: flex-end;
     gap: 24px; flex-wrap: wrap;
   }
-  .ctas { display: flex; gap: clamp(18px, 3vw, 30px); font-size: .9rem; }
+  .ctas { display: flex; gap: clamp(18px, 3vw, 30px); font-size: 1rem; }
   .ctas a { border-bottom: 1px solid var(--blue-line); padding-bottom: 2px; }
   .ctas a:hover { border-color: var(--blue); }
-  .sub-p { color: var(--blue-soft); font-size: .88rem; max-width: 34ch; text-align: right; margin: 0; }
+  .sub-p { color: var(--blue-soft); font-size: .95rem; max-width: 34ch; text-align: right; margin: 0; }
 
   /* full-bleed sections, alternating wash */
   section { padding: clamp(50px, 9vh, 100px) 0; }
@@ -95,7 +95,7 @@
   .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 4vw, 40px); }
   .trio a {
     display: block; padding-top: 16px; border-top: 1px solid var(--blue-line);
-    font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 700; color: var(--blue-deep);
+    font-size: clamp(1.1rem, 2vw, 1.55rem); font-weight: 700; color: var(--blue-deep);
   }
   .trio a .arrow { color: var(--blue); font-weight: 400; margin-right: 8px; }
   .trio a:hover { color: var(--blue); }

@@ -1,6 +1,13 @@
-<div align="justify">
+<div align="center">
 
 # fallout
+
+![Fallout](docs/readme_assets/fallout.jpeg)
+
+</div>
+
+<div align="justify">
+
 
 A blast-radius and architecture guardian for pull requests, built to be used alongside **IBM Bob**. This is a private project: it is not deployed or published on any external service.
 
