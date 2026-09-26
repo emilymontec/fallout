@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. ADMIN | Control Total</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primario: #15803d;
+            --alerta: #b91c1c;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-fondo: #f9fafb;
+            --gris-texto: #6b7280;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--gris-fondo); color: var(--negro); font-size: 13px; }
+
+        /* NAV SUPERIOR DE SISTEMA */
+        header {
+            background: var(--negro); color: white;
+            padding: 10px 25px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .sys-status { font-size: 0.65rem; letter-spacing: 1px; color: var(--primario); font-weight: 600; }
+
+        /* LAYOUT ADMIN */
+        .admin-wrapper { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+        
+        aside { background: var(--blanco); border-right: 1px solid var(--gris-borde); padding: 30px 20px; }
+        .menu-label { font-size: 0.65rem; font-weight: 700; color: var(--gris-texto); text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .menu-link { display: block; padding: 10px 0; text-decoration: none; color: var(--negro); font-weight: 500; border-bottom: 1px solid var(--gris-fondo); }
+        .menu-link:hover { color: var(--primario); }
+
+        /* CONTENIDO */
+        section { padding: 40px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: white; border: 1px solid var(--gris-borde); padding: 20px; }
+        .stat-card small { color: var(--gris-texto); text-transform: uppercase; font-size: 0.6rem; font-weight: 700; }
+        .stat-card p { font-size: 1.5rem; font-weight: 600; margin-top: 5px; }
+
+        /* TABLAS DE GESTIÓN */
+        .table-section { background: white; border: 1px solid var(--gris-borde); margin-bottom: 40px; }
+        .table-header { padding: 20px; border-bottom: 1px solid var(--gris-borde); display: flex; justify-content: space-between; align-items: center; }
+        .table-header h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { background: var(--gris-fondo); text-align: left; padding: 12px 20px; font-size: 0.7rem; text-transform: uppercase; color: var(--gris-texto); }
+        td { padding: 15px 20px; border-bottom: 1px solid var(--gris-fondo); }
+
+        /* ACCIONES */
+        .btn-action { padding: 6px 12px; border: 1px solid var(--negro); background: none; font-size: 0.7rem; font-weight: 600; cursor: pointer; text-transform: uppercase; }
+        .btn-action.approve { border-color: var(--primario); color: var(--primario); }
+        .btn-action.approve:hover { background: var(--primario); color: white; }
+        .btn-action.simulate { background: var(--negro); color: white; }
+
+        /* SIMULADOR DE DEPÓSITO */
+        .simulation-panel { background: #f0fdf4; border: 1px dashed var(--primario); padding: 20px; margin-top: 20px; }
+        .sim-form { display: flex; gap: 15px; margin-top: 10px; }
+        .sim-form input { padding: 8px; border: 1px solid var(--primario); outline: none; flex: 1; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>BV. ADMINISTRATION / CORE_SYSTEM_v4</div>
+    <div class="sys-status">● SISTEMA OPERATIVO : 20 FEB 2026</div>
+</header>
+
+<div class="admin-wrapper">
+    <aside>
+        <span class="menu-label">Usuarios</span>
+        <a href="#" class="menu-link">Directorio General</a>
+        <a href="#" class="menu-link" style="color: var(--primario);">Aprobaciones Pendientes (3)</a>
+        
+        <br>
+        <span class="menu-label">Finanzas</span>
+        <a href="#" class="menu-link">Monitor de Transacciones</a>
+        <a href="#" class="menu-link">Simulador de Depósito</a>
+    </aside>
+
+    <section>
+        <div class="stats-grid">
+            <div class="stat-card"><small>Usuarios Totales</small><p>1,240</p></div>
+            <div class="stat-card"><small>Cuentas x Aprobar</small><p style="color: var(--primario);">3</p></div>
+            <div class="stat-card"><small>Volumen 24h</small><p>$420,500</p></div>
+            <div class="stat-card"><small>Alertas Riesgo</small><p style="color: var(--alerta);">0</p></div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <h2>Cuentas Pendientes de Aprobación</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Fecha Registro</th>
+                        <th>Documentación</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lucía Fernández</strong></td>
+                        <td>l.fernandez@mail.com</td>
+                        <td>20/02/2026</td>
+                        <td style="color: var(--primario);">Verificado ✓</td>
+                        <td><button class="btn-action approve">Aprobar Cuenta</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inversiones Norte S.L.</strong></td>
+                        <td>admin@norte.com</td>
+                        <td>19/02/2026</td>
+                        <td style="color: var(--primario);">Verificado ✓</td>
+                        <td><button class="btn-action approve">Aprobar Cuenta</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <h2>Últimas Transacciones (Monitor Global)</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#882190</td>
+                        <td>Carlos Sustentable</td>
+                        <td>Supermercado Orgánico</td>
+                        <td>-$85.20</td>
+                        <td><small>COMPLETADO</small></td>
+                    </tr>
+                    <tr>
+                        <td>#882189</td>
+                        <td>Elena Vergel</td>
+                        <td>Carlos Sustentable</td>
+                        <td>+$150.00</td>
+                        <td><small>COMPLETADO</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="simulation-panel">
+            <h3 style="color: var(--primario); font-size: 0.8rem; text-transform: uppercase;">Simulador de Inyección de Capital (Sandbox)</h3>
+            <p style="font-size: 0.75rem; color: var(--primario); margin-top: 5px;">Utilice esta herramienta para simular depósitos entrantes vía SPEI/IBAN para pruebas.</p>
+            <div class="sim-form">
+                <input type="text" placeholder="ID de Usuario o Cuenta">
+                <input type="number" placeholder="Monto $0.00">
+                <button class="btn-action simulate">Ejecutar Depósito</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

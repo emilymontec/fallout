@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtlasBank | Premium Digital Banking</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="/assets/css/design-system.css">
+    
+    <style>
+        /* Hero Section Specific Styles */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.6;
+            mix-blend-mode: screen;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(7,11,10,0.1) 0%, rgba(7,11,10,1) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--clr-text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* 3D Card Display */
+        .hero-visual {
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .credit-card {
+            width: 100%;
+            max-width: 450px;
+            aspect-ratio: 1.586;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: rotateY(-15deg) rotateX(10deg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .credit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: skewX(-20deg);
+            animation: shine 8s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chip {
+            width: 45px;
+            height: 35px;
+            background: linear-gradient(135deg, #FFD700, #DAA520);
+            border-radius: 6px;
+            opacity: 0.8;
+        }
+
+        .card-number {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 1rem;
+        }
+
+        .card-name {
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Features Section */
+        .features {
+            padding: var(--space-2xl) 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-text p {
+                margin: 0 auto 2.5rem;
+            }
+            .hero-actions {
+                justify-content: center;
+            }
+            .hero-visual {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            Atlas<span>Bank</span>
+        </a>
+        <div class="navbar-links">
+            <a href="#wealth">Wealth</a>
+            <a href="#cards">Cards</a>
+            <a href="#crypto">Crypto</a>
+        </div>
+        <div class="navbar-actions">
+            <a href="/auth/login.html" class="btn btn-glass">Log In</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="glow-orb" style="top: 10%; left: -10%;"></div>
+        <img src="/assets/img/hero-bg.png" alt="Premium Abstract Background" class="hero-bg">
+        <div class="hero-overlay"></div>
+
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Banking,<br><span class="text-gradient">Elevated.</span></h1>
+                <p>Experience the future of finance with unparalleled security, seamless global transfers, and exclusive wealth management.</p>
+                <div class="hero-actions">
+                    <a href="/auth/register.html" class="btn btn-primary">Open Account</a>
+                    <a href="#features" class="btn btn-glass">Explore Benefits</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="credit-card">
+                    <div class="card-top">
+                        <div class="chip"></div>
+                        <svg width="40" height="25" viewBox="0 0 40 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12.5" cy="12.5" r="12.5" fill="white" fill-opacity="0.5"/>
+                            <circle cx="27.5" cy="12.5" r="12.5" fill="white" fill-opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <div class="card-number">•••• •••• •••• 4289</div>
+                    <div class="card-bottom">
+                        <div class="card-name">ALEXANDER G.</div>
+                        <div class="card-logo" style="font-weight: 800; font-size: 1.2rem; font-style: italic;">ATLAS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features container">
+        <div class="glow-orb" style="bottom: -20%; right: -10%; background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 70%);"></div>
+        
+        <div class="section-header">
+            <h2>Beyond Traditional <span class="text-gradient">Banking</span></h2>
+            <p style="color: var(--clr-text-secondary);">Everything you need to manage your wealth, beautifully designed and expertly engineered.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card glass-panel">
+                <div class="feature-icon">✦</div>
+                <h3>Zero Global Fees</h3>
+                <p>Spend and transfer money internationally with the real exchange rate and zero hidden fees.</p>
+            </div>
+            <div class="feature-card glass-panel">
+                <div class="feature-icon">🛡️</div>
+                <h3>Military-Grade Security</h3>
+                <p>Your funds are protected by biometric authentication, virtual cards, and AI-driven fraud detection.</p>
+            </div>
+            <div class="feature-card glass-panel">
+                <div class="feature-icon">📈</div>
+                <h3>Smart Investing</h3>
+                <p>Access global markets, ETFs, and crypto directly from your primary account.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

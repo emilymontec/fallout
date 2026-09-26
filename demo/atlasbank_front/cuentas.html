@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Gestión de Cuentas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primario: #15803d;
+            --primario-soft: #f0fdf4;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-fondo: #f9fafb;
+            --gris-texto: #6b7280;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--blanco); color: var(--negro); }
+
+        header {
+            padding: 20px 5%;
+            border-bottom: 1px solid var(--gris-borde);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        main { padding: 60px 8%; max-width: 1200px; margin: 0 auto; }
+
+        .section-intro { margin-bottom: 60px; }
+        .section-intro h1 { font-size: 3rem; letter-spacing: -2px; margin-bottom: 10px; }
+        .section-intro p { color: var(--gris-texto); font-size: 1.1rem; }
+
+        /* GRID DE CUENTAS */
+        .accounts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .account-card {
+            border: 1px solid var(--negro);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            transition: 0.3s;
+        }
+
+        /* LADO IZQUIERDO: RESUMEN */
+        .account-summary {
+            padding: 40px;
+            background: var(--negro);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .account-type { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--primario); }
+        .account-balance { font-size: 2.2rem; font-weight: 600; margin: 20px 0; }
+        .status-pill { 
+            display: inline-block; 
+            padding: 4px 10px; 
+            background: var(--primario); 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            text-transform: uppercase;
+        }
+
+        /* LADO DERECHO: DETALLES TÉCNICOS */
+        .account-details {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background: var(--blanco);
+        }
+
+        .detail-group { position: relative; }
+        .detail-group label { 
+            display: block; 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            color: var(--gris-texto); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+        }
+        .detail-value { 
+            font-size: 1.1rem; 
+            font-weight: 400; 
+            letter-spacing: 0.5px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--gris-borde);
+            padding: 4px 8px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.2s;
+        }
+        .copy-btn:hover { background: var(--negro); color: white; border-color: var(--negro); }
+
+        /* ACCIONES DE CUENTA */
+        .account-actions {
+            grid-column: span 2;
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gris-borde);
+            display: flex;
+            gap: 20px;
+        }
+        .action-link { text-decoration: none; color: var(--negro); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; border-bottom: 2px solid var(--primario); padding-bottom: 2px; }
+        .action-link:hover { color: var(--primario); }
+
+        @media (max-width: 900px) {
+            .account-card { grid-template-columns: 1fr; }
+            .account-details { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">BV. SYSTEM</div>
+    <div style="font-size: 0.8rem; font-weight: 600;">ID: CS_8821</div>
+</header>
+
+<main>
+    <section class="section-intro">
+        <p style="color: var(--primario); font-weight: 600; margin-bottom: 10px;">[ ÁREA DE PRODUCTOS ]</p>
+        <h1>Mis Cuentas</h1>
+        <p>Resumen detallado de tus activos y credenciales de sistema.</p>
+    </section>
+
+    <div class="accounts-container">
+        <article class="account-card">
+            <div class="account-summary">
+                <div>
+                    <span class="account-type">Principal</span>
+                    <h2 class="account-balance">$12,450.00</h2>
+                </div>
+                <div>
+                    <span class="status-pill">Estatus: Activo</span>
+                </div>
+            </div>
+            
+            <div class="account-details">
+                <div class="detail-group">
+                    <label>Titular</label>
+                    <p class="detail-value">Carlos Sustentable</p>
+                </div>
+                <div class="detail-group">
+                    <label>Tipo de Cuenta</label>
+                    <p class="detail-value">Ahorro Rendimiento Verde</p>
+                </div>
+                <div class="detail-group">
+                    <label>Número de Cuenta</label>
+                    <p class="detail-value">8821 0092 11 <button class="copy-btn">Copiar</button></p>
+                </div>
+                <div class="detail-group">
+                    <label>IBAN / CLABE</label>
+                    <p class="detail-value">ES21 1580 0012 8821 0092 <button class="copy-btn">Copiar</button></p>
+                </div>
+
+                <div class="account-actions">
+                    <a href="#" class="action-link">Ver Extractos</a>
+                    <a href="#" class="action-link">Configurar Límites</a>
+                    <a href="#" class="action-link">Cerrar Producto</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="account-card">
+            <div class="account-summary" style="background: #1a1a1a;">
+                <div>
+                    <span class="account-type">Inversión</span>
+                    <h2 class="account-balance">$3,200.00</h2>
+                </div>
+                <div>
+                    <span class="status-pill" style="background: var(--gris-texto);">Estatus: En Revisión</span>
+                </div>
+            </div>
+            
+            <div class="account-details">
+                <div class="detail-group">
+                    <label>Titular</label>
+                    <p class="detail-value">Carlos Sustentable</p>
+                </div>
+                <div class="detail-group">
+                    <label>Fondo Destinado</label>
+                    <p class="detail-value">Energía Eólica 2026</p>
+                </div>
+                <div class="detail-group">
+                    <label>Número de Referencia</label>
+                    <p class="detail-value">4402 9182 00 <button class="copy-btn">Copiar</button></p>
+                </div>
+                <div class="detail-group">
+                    <label>Vencimiento</label>
+                    <p class="detail-value">15 DIC 2028</p>
+                </div>
+
+                <div class="account-actions">
+                    <a href="#" class="action-link">Proyección de Impacto</a>
+                    <a href="#" class="action-link">Documentación</a>
+                </div>
+            </div>
+        </article>
+    </div>
+</main>
+
+</body>
+</html>

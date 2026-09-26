@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Acceso seguro al sistema ATLAS BANK">
+    <meta name="theme-color" content="#15803d">
+    <title>ATLAS BANK | Acceso Seguro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/common/styles.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--gris-fondo);
+            overflow: hidden;
+        }
+
+        .login-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin: var(--spacing-xl);
+        }
+
+        .bg-decoration {
+            position: absolute;
+            font-size: 15vw;
+            font-weight: 600;
+            color: rgba(21, 128, 61, 0.05);
+            z-index: -1;
+            bottom: -5vw;
+            left: -2vw;
+            pointer-events: none;
+            letter-spacing: -1vw;
+            white-space: nowrap;
+        }
+
+        .login-card {
+            background: var(--blanco);
+            border: 1px solid var(--gris-borde);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-3xl) var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+            animation: fadeIn var(--transition-normal);
+            position: relative;
+        }
+
+        .login-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primario), var(--primario-light));
+        }
+
+        .brand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--gris-borde);
+        }
+
+        .brand {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primario);
+            letter-spacing: -0.5px;
+        }
+
+        .brand-id {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gris-claro);
+        }
+
+        .login-header {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .login-header h1 {
+            font-size: 1.875rem;
+            letter-spacing: -1px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .login-header p {
+            font-size: 0.9375rem;
+            color: var(--gris);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            margin-bottom: var(--spacing-sm);
+            color: var(--negro);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--gris-borde);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-family: var(--font-primaria);
+            outline: none;
+            transition: all var(--transition-normal);
+            background-color: var(--gris-fondo);
+        }
+
+        .form-group input::placeholder {
+            color: var(--gris-claro);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primario);
+            background-color: var(--primario-soft);
+            box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: var(--spacing-lg);
+            background: var(--primario);
+            color: var(--blanco);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            font-family: var(--font-primaria);
+            margin-top: var(--spacing-md);
+        }
+
+        .btn-login:hover {
+            background: var(--primario-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--gris-borde);
+            gap: var(--spacing-md);
+        }
+
+        .login-footer a {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--gris);
+            transition: color var(--transition-normal);
+            flex: 1;
+        }
+
+        .login-footer a:hover {
+            color: var(--primario);
+        }
+
+        .login-footer a:first-child {
+            text-align: left;
+        }
+
+        .login-footer a:last-child {
+            text-align: right;
+            color: var(--primario);
+            font-weight: 600;
+        }
+
+        .alert {
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+            border-left: 4px solid;
+            font-size: 0.9375rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+            animation: fadeIn var(--transition-normal);
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            color: #991b1b;
+            border-color: var(--error);
+        }
+
+        .alert-success {
+            background-color: #ecfdf5;
+            color: #065f46;
+            border-color: var(--exito);
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: var(--spacing-2xl) var(--spacing-lg);
+            }
+
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .brand-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-md);
+            }
+
+            .login-footer {
+                flex-direction: column;
+            }
+
+            .login-footer a {
+                text-align: center !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-decoration">ATLAS</div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="brand-header">
+                <span class="brand">ATLAS BANK</span>
+                <span class="brand-id">Sistema ID-01</span>
+            </div>
+
+            <div class="login-header">
+                <h1>Acceso al sistema</h1>
+                <p>Introduce tus credenciales para continuar de forma segura.</p>
+            </div>
+
+            <div id="alertContainer"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Identificador de Usuario</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username"
+                        placeholder="ejemplo@email.com"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password"
+                        placeholder="••••••••"
+                        required
+                        autocomplete="current-password"
+                    >
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">
+                    Verificar Identidad
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <a href="/auth/forgot-password">¿Olvidaste tu acceso?</a>
+                <a href="/auth/register">Abrir cuenta</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/common/auth.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtlasBank Admin | Seguridad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<div class="app-container">
+    <aside class="app-sidebar">
+        <div class="logo" style="color: white; margin-bottom: 2rem;">Atlas<span style="color: var(--primary-light);">Bank</span></div>
+        
+        <nav class="sidebar-nav">
+            <span class="label" style="color: rgba(255,255,255,0.4); margin-bottom: 0.5rem; display: block;">Navegación</span>
+            <a href="/admin/panel_admin.html" class="sidebar-link">📊 Dashboard Principal</a>
+            
+            <span class="label" style="color: rgba(255,255,255,0.4); margin-top: 1.5rem; margin-bottom: 0.5rem; display: block;">Gestión de Usuarios</span>
+            <a href="/admin/admin_directorio.html" class="sidebar-link">👥 Directorio General</a>
+            <a href="/admin/admin_aprobaciones.html" class="sidebar-link">✅ Aprobaciones (<span id="pendingCount">0</span>)</a>
+
+            <span class="label" style="color: rgba(255,255,255,0.4); margin-top: 1.5rem; margin-bottom: 0.5rem; display: block;">Operaciones</span>
+            <a href="/admin/admin_transacciones.html" class="sidebar-link">📈 Monitor Financiero</a>
+            <a href="/admin/admin_simulador.html" class="sidebar-link">🧪 Simulador de Depósito</a>
+
+            <span class="label" style="color: rgba(255,255,255,0.4); margin-top: 1.5rem; margin-bottom: 0.5rem; display: block;">Seguridad y Cuenta</span>
+            <a href="/admin/admin_seguridad.html" class="sidebar-link active">🔒 Control de Seguridad</a>
+            <a href="/admin/admin_perfil.html" class="sidebar-link">👤 Mi Perfil</a>
+        </nav>
+
+        <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div id="adminDisplay" style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 1rem;">Admin Terminal</div>
+            <button onclick="sessionStorage.clear(); window.location.href='/auth/login.html'; return false;" class="btn btn-outline" style="width: 100%; color: white; border-color: rgba(255,255,255,0.2);">Cerrar Sesión</button>
+        </div>
+    </aside>
+
+    <main class="app-content">
+        <header class="content-header">
+            <div>
+                <h1 style="font-size: 1.75rem;">Control de Seguridad</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Gestión de accesos, bloqueos y recuperación de cuentas. <span id="currentDate"></span></p>
+            </div>
+            <div>
+                <span id="adminRoleBadge" class="badge badge-error">ADMINISTRADOR</span>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2 style="font-size: 1rem;">Seguridad de Cuentas y Control de Acceso</h2>
+            </div>
+            <table class="app-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User ID</th>
+                        <th>Nombre</th>
+                        <th>Estado de Cuenta</th>
+                        <th>Acción</th>
+                        <th id="resetColHead" style="display:none;">Recuperación</th>
+                    </tr>
+                </thead>
+                <tbody id="securityTableBody">
+                    <tr><td colspan="6" style="text-align:center; padding:40px; color: var(--text-muted);">Iniciando protocolos de seguridad...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<div id="resetModal" class="modal" style="display:none; position:fixed; z-index:100; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div class="stat-card" style="width:400px; padding:30px;">
+        <h3 style="margin-bottom:1rem;">Restablecer Contraseña</h3>
+        <p style="font-size:0.85rem; margin-bottom:2rem; color:var(--text-muted);">Ingresa la nueva contraseña para el cliente <strong id="resetTargetName"></strong>.</p>
+        
+        <div class="form-group" style="margin-bottom: 2rem;">
+            <label class="label">Nueva Contraseña</label>
+            <input type="text" id="newPassword" class="form-control" placeholder="Nueva Contraseña">
+        </div>
+        
+        <div class="flex gap-3 justify-between">
+            <button onclick="closeModal()" class="btn btn-outline" style="flex:1;">Cancelar</button>
+            <button onclick="executeReset()" class="btn btn-primary" style="flex:1;">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const adminRole = (sessionStorage.getItem('role') || '').toUpperCase();
+const isAdmin = adminRole === 'ADMIN';
+
+document.getElementById('adminDisplay').textContent = `Admin: ${sessionStorage.getItem('adminUser') || 'Executive'}`;
+document.getElementById('currentDate').textContent = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+document.getElementById('adminRoleBadge').textContent = adminRole;
+
+if (isAdmin) {
+    document.getElementById('resetColHead').style.display = 'table-cell';
+}
+
+let resetTargetId = null;
+
+async function loadSecurityData() {
+    try {
+        const statsRes = await fetch('/api/admin/stats');
+        if (statsRes.ok) {
+            const stats = await statsRes.json();
+            document.getElementById('pendingCount').textContent = stats.pendingAccounts;
+        }
+
+        const res = await fetch('/api/admin/customers');
+        if (res.ok) {
+            const customers = await res.json();
+            const tbody = document.getElementById('securityTableBody');
+            tbody.innerHTML = '';
+            customers.forEach(c => {
+                const tr = document.createElement('tr');
+                const isLocked = c.status === 'LOCKED' || c.status === 'INACTIVE';
+                const statusColor = isLocked ? 'var(--error)' : 'var(--primary)';
+                
+                const lockBtn = isLocked 
+                    ? `<button onclick="unlockCustomer(${c.id})" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.75rem;">Desbloquear</button>`
+                    : `<button onclick="lockCustomer(${c.id})" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.75rem; color: var(--error); border-color: var(--error);">Bloquear Cuenta</button>`;
+
+                const resetBtn = isAdmin 
+                    ? `<td style="display:table-cell;"><button onclick="openResetModal(${c.id}, '${c.fullName}')" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.75rem;">Recuperar</button></td>`
+                    : '';
+
+                tr.innerHTML = `
+                    <td>#${c.id}</td>
+                    <td style="font-family: monospace;">${c.customerId || c.id}</td>
+                    <td><strong>${c.fullName}</strong></td>
+                    <td><span class="badge" style="background: ${statusColor}20; color: ${statusColor}; border: 1px solid ${statusColor}40;">${c.status}</span></td>
+                    <td>${lockBtn}</td>
+                    ${resetBtn}
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    } catch (err) { console.error(err); }
+}
+
+async function lockCustomer(id) {
+    if (!confirm('¿Seguro que deseas bloquear esta cuenta? El usuario perderá acceso inmediato.')) return;
+    try {
+        const res = await fetch(`/api/admin/customers/${id}/lock`, { method: 'POST' });
+        if (res.ok) loadSecurityData();
+    } catch (err) { alert('Error al bloquear'); }
+}
+
+async function unlockCustomer(id) {
+    try {
+        const res = await fetch(`/api/admin/customers/${id}/unlock`, { method: 'POST' });
+        if (res.ok) loadSecurityData();
+    } catch (err) { alert('Error al desbloquear'); }
+}
+
+function openResetModal(id, name) {
+    resetTargetId = id;
+    document.getElementById('resetTargetName').textContent = name;
+    document.getElementById('resetModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('resetModal').style.display = 'none';
+    document.getElementById('newPassword').value = '';
+}
+
+async function executeReset() {
+    const password = document.getElementById('newPassword').value;
+    if (!password) return alert('Ingresa una contraseña');
+
+    try {
+        const res = await fetch(`/api/admin/customers/${resetTargetId}/reset-password`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password, adminRole })
+        });
+        if (res.ok) {
+            alert('Contraseña restablecida con éxito');
+            closeModal();
+            loadSecurityData();
+        } else {
+            const data = await res.json();
+            alert(data.message || 'Error al restablecer');
+        }
+    } catch (err) { alert('Error de conexión'); }
+}
+
+loadSecurityData();
+</script>
+</body>
+</html>

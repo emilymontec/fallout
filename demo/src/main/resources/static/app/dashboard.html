@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de control principal - ATLAS BANK">
+    <meta name="theme-color" content="#15803d">
+    <title>ATLAS BANK | Panel de Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/common/styles.css">
+    <style>
+        /* HEADER DE SESIÓN */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border-bottom: 1px solid var(--gris-borde);
+            background: var(--blanco);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primario);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            font-weight: 300;
+            color: var(--gris-claro);
+            margin-left: var(--spacing-sm);
+        }
+
+        .user-session {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .user-info {
+            text-align: right;
+            font-size: 0.875rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--negro);
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--gris-claro);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primario), var(--primario-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blanco);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* LAYOUT PRINCIPAL */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            min-height: calc(100vh - 76px);
+            background: var(--blanco);
+        }
+
+        .main-panel {
+            padding: var(--spacing-3xl) var(--spacing-2xl);
+            border-right: 1px solid var(--gris-borde);
+            overflow-y: auto;
+        }
+
+        .section-header {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primario);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .balance-display {
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .balance-label {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--gris-claro);
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .balance-amount {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 600;
+            letter-spacing: -2px;
+            color: var(--negro);
+            line-height: 1;
+        }
+
+        .transactions-section {
+            margin-top: var(--spacing-3xl);
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--negro);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--primario);
+            display: inline-block;
+        }
+
+        .transactions-list {
+            margin-top: var(--spacing-xl);
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg) 0;
+            border-bottom: 1px solid var(--gris-borde);
+            transition: all var(--transition-normal);
+        }
+
+        .transaction-item:hover {
+            background: var(--primario-soft);
+            margin: 0 calc(var(--spacing-md) * -1);
+            padding: var(--spacing-lg) var(--spacing-md);
+            border-radius: var(--radius-sm);
+        }
+
+        .transaction-info h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--negro);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .transaction-info p {
+            font-size: 0.75rem;
+            color: var(--gris-claro);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        .transaction-amount {
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .transaction-amount.positive {
+            color: var(--primario);
+        }
+
+        .transaction-amount.negative {
+            color: var(--negro);
+        }
+
+        /* PANEL LATERAL */
+        .side-panel {
+            background: linear-gradient(135deg, var(--primario-soft), #e8f7f3);
+            padding: var(--spacing-3xl) var(--spacing-2xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2xl);
+            overflow-y: auto;
+        }
+
+        .impact-card {
+            background: linear-gradient(135deg, var(--primario), var(--primario-dark));
+            color: var(--blanco);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-md);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .impact-card::before {
+            content: "🌿";
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            font-size: 6rem;
+            opacity: 0.1;
+        }
+
+        .impact-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            opacity: 0.9;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .impact-value {
+            font-size: 2.25rem;
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .impact-description {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .action-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--primario);
+            border-radius: var(--radius-sm);
+            background: var(--blanco);
+            color: var(--primario);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-align: center;
+        }
+
+        .action-link:hover {
+            background: var(--primario);
+            color: var(--blanco);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .sidebar-nav {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            border-top: 1px solid rgba(21, 128, 61, 0.2);
+            padding-top: var(--spacing-xl);
+        }
+
+        .nav-item {
+            display: block;
+            color: var(--gris);
+            text-decoration: none;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all var(--transition-normal);
+            padding-left: var(--spacing-sm);
+        }
+
+        .nav-item:hover {
+            color: var(--primario);
+            padding-left: var(--spacing-lg);
+        }
+
+        .nav-item.logout {
+            color: var(--error);
+        }
+
+        .nav-item.logout:hover {
+            color: #dc2626;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .main-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--gris-borde);
+            }
+
+            .side-panel {
+                border-top: 1px solid var(--gris-borde);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: var(--spacing-md) var(--spacing-lg);
+                flex-wrap: wrap;
+                gap: var(--spacing-md);
+            }
+
+            .main-panel,
+            .side-panel {
+                padding: var(--spacing-2xl) var(--spacing-lg);
+            }
+
+            .balance-amount {
+                font-size: clamp(2rem, 4vw, 3rem);
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                flex: 1;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-session {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .logo {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">ATLAS BANK <span>/ Dashboard</span></div>
+        <div class="user-session">
+            <div class="user-info">
+                <div class="user-name">Carlos Sustentable</div>
+                <div class="user-role">Cliente Premium</div>
+            </div>
+            <div class="avatar">CS</div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="main-panel">
+            <div class="section-header">
+                <span class="section-label">[ Saldo Disponible ]</span>
+                <div class="balance-display">
+                    <h1 class="balance-amount">$12,450.00</h1>
+                </div>
+            </div>
+
+            <section class="transactions-section">
+                <h2 class="section-title">Movimientos recientes</h2>
+                <div class="transactions-list">
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <h4>Supermercado Orgánico</h4>
+                            <p>20 Febrero 2026 / 14:30</p>
+                        </div>
+                        <div class="transaction-amount negative">-$85.20</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <h4>Depósito Nómina</h4>
+                            <p>15 Febrero 2026 / 09:00</p>
+                        </div>
+                        <div class="transaction-amount positive">+$3,200.00</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <h4>Suscripción Energía Verde</h4>
+                            <p>12 Febrero 2026 / 10:15</p>
+                        </div>
+                        <div class="transaction-amount negative">-$40.00</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <h4>Transferencia Recibida</h4>
+                            <p>10 Febrero 2026 / 18:45</p>
+                        </div>
+                        <div class="transaction-amount positive">+$150.00</div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section class="side-panel">
+            <div class="impact-card">
+                <div class="impact-label">Impacto acumulado</div>
+                <div class="impact-value">14.2 kg</div>
+                <div class="impact-description">CO₂ evitado este mes mediante tus inversiones en proyectos verdes.</div>
+            </div>
+
+            <div>
+                <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.75px; margin-bottom: var(--spacing-lg); color: var(--primario);">Operaciones Rápidas</div>
+                <div class="quick-actions">
+                    <a href="/customer/transfer" class="action-link">Transferir</a>
+                    <a href="/customer/payments" class="action-link">Pagar</a>
+                    <a href="/customer/investments" class="action-link">Invertir</a>
+                    <a href="/customer/statements" class="action-link">Extractos</a>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="/customer/account-settings" class="nav-item">Configuración de Cuenta</a>
+                <a href="/customer/security" class="nav-item">Seguridad y Llaves</a>
+                <a href="/customer/help" class="nav-item">Centro de Ayuda</a>
+                <a href="/auth/logout" class="nav-item logout">Cerrar Sesión</a>
+            </nav>
+        </section>
+    </main>
+
+    <script src="/common/dashboard.js" defer></script>
+</body>
+</html>

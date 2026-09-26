@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Historial de Movimientos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primario: #15803d;
+            --primario-soft: #f0fdf4;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-fondo: #f9fafb;
+            --gris-texto: #6b7280;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--blanco); color: var(--negro); }
+
+        /* HEADER */
+        header {
+            padding: 20px 5%;
+            border-bottom: 1px solid var(--gris-borde);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-meta { font-size: 0.75rem; font-weight: 600; color: var(--gris-texto); }
+
+        /* CONTENEDOR PRINCIPAL */
+        main { padding: 40px 5%; }
+
+        .page-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 40px;
+        }
+        .page-header h1 { font-size: 3rem; letter-spacing: -2px; line-height: 1; }
+
+        /* BARRA DE FILTROS BRUTALISTA */
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            padding: 20px;
+            background: var(--gris-fondo);
+            border: 1px solid var(--gris-borde);
+            margin-bottom: 2px; /* Espacio mínimo para el grid */
+        }
+
+        .filters { display: flex; gap: 20px; align-items: center; }
+        
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--gris-texto); }
+        
+        select, input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid var(--gris-borde);
+            background: white;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+        }
+        select:focus { border-color: var(--primario); }
+
+        /* BOTONES DE EXPORTACIÓN */
+        .export-tools { display: flex; gap: 10px; }
+        .btn-tool {
+            padding: 10px 20px;
+            border: 1px solid var(--negro);
+            background: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-tool:hover { background: var(--negro); color: white; }
+        .btn-tool.pdf { border-color: var(--primario); color: var(--primario); }
+        .btn-tool.pdf:hover { background: var(--primario); color: white; }
+
+        /* TABLA DE MOVIMIENTOS */
+        .table-container { border: 1px solid var(--gris-borde); }
+        table { width: 100%; border-collapse: collapse; }
+        
+        thead { background: var(--negro); color: white; }
+        th { text-align: left; padding: 15px 20px; font-size: 0.75rem; font-weight: 400; text-transform: uppercase; letter-spacing: 1px; }
+        
+        tbody tr { border-bottom: 1px solid var(--gris-borde); transition: 0.2s; }
+        tbody tr:hover { background: var(--primario-soft); }
+        
+        td { padding: 20px; font-size: 0.95rem; }
+        
+        .date-cell { color: var(--gris-texto); font-size: 0.85rem; width: 120px; }
+        .type-tag { font-size: 0.65rem; font-weight: 700; padding: 4px 8px; border: 1px solid; text-transform: uppercase; }
+        .type-in { color: var(--primario); border-color: var(--primario); }
+        .type-out { color: var(--negro); border-color: var(--negro); }
+
+        .amount-cell { font-weight: 600; text-align: right; font-size: 1.1rem; }
+        .amount-in { color: var(--primario); }
+        
+        /* FOOTER DE PAGINACIÓN */
+        .pagination {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; border: 1px solid var(--gris-borde); border-top: none;
+            font-size: 0.8rem; font-weight: 600;
+        }
+        .page-link { color: var(--negro); text-decoration: none; margin: 0 10px; }
+        .page-link.active { color: var(--primario); text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">BV. SYSTEM</div>
+    <div class="nav-meta">USUARIO: CS_8821 / ESTADO: CONECTADO</div>
+</header>
+
+<main>
+    <div class="page-header">
+        <div>
+            <p style="color: var(--primario); font-weight: 600; margin-bottom: 5px;">[ CONSULTA DE ACTIVIDAD ]</p>
+            <h1>Movimientos</h1>
+        </div>
+        <div style="text-align: right;">
+            <p class="nav-meta">SALDO ACTUAL</p>
+            <p style="font-size: 1.8rem; font-weight: 600;">$12,450.00</p>
+        </div>
+    </div>
+
+    <section class="toolbar">
+        <div class="filters">
+            <div class="filter-group">
+                <label>Desde</label>
+                <input type="date" value="2026-02-01">
+            </div>
+            <div class="filter-group">
+                <label>Hasta</label>
+                <input type="date" value="2026-02-20">
+            </div>
+            <div class="filter-group">
+                <label>Tipo</label>
+                <select>
+                    <option>Todos los flujos</option>
+                    <option>Ingresos (+)</option>
+                    <option>Egresos (-)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="export-tools">
+            <button class="btn-tool">Exportar CSV</button>
+            <button class="btn-tool pdf" onclick="alert('Generando PDF de movimientos...')">Generar PDF</button>
+        </div>
+    </section>
+
+    <section class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Concepto / Referencia</th>
+                    <th>Estado</th>
+                    <th style="text-align: right;">Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="date-cell">20 FEB 2026</td>
+                    <td><span class="type-tag type-out">Egreso</span></td>
+                    <td>Transferencia enviada: <strong>Supermercado Orgánico</strong><br><small style="color: var(--gris-texto);">REF: 88219901</small></td>
+                    <td><small>COMPLETADO</small></td>
+                    <td class="amount-cell">-$85.20</td>
+                </tr>
+                <tr>
+                    <td class="date-cell">15 FEB 2026</td>
+                    <td><span class="type-tag type-in">Ingreso</span></td>
+                    <td>Abono por: <strong>Nómina BV Mensual</strong><br><small style="color: var(--gris-texto);">REF: PAYROLL-002</small></td>
+                    <td><small>COMPLETADO</small></td>
+                    <td class="amount-cell amount-in">+$3,200.00</td>
+                </tr>
+                <tr>
+                    <td class="date-cell">12 FEB 2026</td>
+                    <td><span class="type-tag type-out">Egreso</span></td>
+                    <td>Pago servicio: <strong>Energía Eólica S.A.</strong><br><small style="color: var(--gris-texto);">REF: 1102933</small></td>
+                    <td><small>COMPLETADO</small></td>
+                    <td class="amount-cell">-$40.00</td>
+                </tr>
+                <tr>
+                    <td class="date-cell">10 FEB 2026</td>
+                    <td><span class="type-tag type-in">Ingreso</span></td>
+                    <td>Transferencia de: <strong>Elena Vergel</strong><br><small style="color: var(--gris-texto);">REF: REGALO_FEBRERO</small></td>
+                    <td><small>COMPLETADO</small></td>
+                    <td class="amount-cell amount-in">+$150.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <div class="pagination">
+        <div>Mostrando 4 de 128 movimientos</div>
+        <div>
+            <a href="#" class="page-link active">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">3</a>
+            <a href="#" class="page-link">...</a>
+            <a href="#" class="page-link">Siguiente →</a>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

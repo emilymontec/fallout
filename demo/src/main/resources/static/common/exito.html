@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Operación Exitosa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        :root {
+            --primario: #15803d;
+            --primario-soft: #f0fdf4;
+            --negro: #111827;
+        }
+        body { background: var(--blanco); }
+        .status-container { text-align: center; padding: 100px 5%; }
+        .success-icon { color: #15803d; font-size: 6rem; line-height: 1; margin-bottom: 10px; }
+        .success-label { text-transform: uppercase; letter-spacing: 2px; font-weight: 600; color: #15803d; margin-bottom: 20px; display: block; }
+        h1 { font-size: 3.5rem; letter-spacing: -3px; line-height: 0.9; margin-bottom: 25px; color: #111827; }
+        p { color: #6b7280; max-width: 420px; margin: 0 auto 40px; font-size: 1.1rem; }
+        .ref-box { background: #f0fdf4; padding: 20px; display: inline-block; border: 1px solid #15803d; text-align: left; margin-bottom: 40px; }
+        .ref-box p { font-size: 0.7rem; font-weight: 700; color: #15803d; letter-spacing: 1px; margin: 0; }
+        .btn-dashboard { text-decoration: none; padding: 18px 40px; background: #111827; color: white; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: inline-block; }
+        .btn-dashboard:hover { background: #15803d; }
+    </style>
+</head>
+<body>
+    <div class="status-container">
+        <div class="success-icon">✓</div>
+        <span class="success-label">[ OPERACIÓN EXITOSA ]</span>
+        <h1>FONDOS<br>ENVIADOS.</h1>
+        <p>La transferencia se ha procesado correctamente. El comprobante digital ha sido enviado a tu correo.</p>
+        <div class="ref-box">
+            <p>ID DE RASTREO: BV-992833410</p>
+        </div>
+        <br>
+        <a href="/customer/dashboard.html" class="btn-dashboard">Volver al Panel</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestión de tarjetas - ATLAS BANK">
+    <title>ATLAS BANK | Mis Tarjetas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/common/styles.css">
+    <style>
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border-bottom: 1px solid var(--gris-borde);
+            background: var(--blanco);
+        }
+
+        .logo {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primario);
+            letter-spacing: -0.5px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-3xl) var(--spacing-2xl);
+        }
+
+        .page-header {
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .section-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primario);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            letter-spacing: -1.5px;
+        }
+
+        .cards-management {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: var(--spacing-3xl);
+        }
+
+        .card-visual {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, var(--negro), var(--gris-oscuro));
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            color: var(--blanco);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-normal);
+        }
+
+        .card-visual.blocked {
+            filter: grayscale(1) opacity(0.6);
+        }
+
+        .card-visual.blocked::after {
+            content: "BLOQUEADA";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            border: 4px solid var(--error);
+            color: var(--error);
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--blanco);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-logo {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            color: var(--primario-light);
+        }
+
+        .card-brand {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .card-number {
+            font-size: 1.375rem;
+            letter-spacing: 2px;
+            word-spacing: 10px;
+            margin: var(--spacing-xl) 0;
+            font-family: var(--font-monoespaciada);
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 0.8rem;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .card-info-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+        }
+
+        .card-info-value {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2xl);
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--gris-borde);
+            border-radius: var(--radius-md);
+            background: var(--blanco);
+        }
+
+        .control-label h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .control-label p {
+            font-size: 0.8125rem;
+            color: var(--gris);
+            margin: 0;
+        }
+
+        /* TOGGLE SWITCH */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--gris-borde);
+            transition: var(--transition-normal);
+            border-radius: 34px;
+        }
+
+        .slider::before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--blanco);
+            transition: var(--transition-normal);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primario);
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(24px);
+        }
+
+        .limit-section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .limit-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gris-borde);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primario), var(--primario-light));
+            width: 65%;
+            transition: width var(--transition-normal);
+        }
+
+        .spending-section {
+            margin-top: var(--spacing-2xl);
+        }
+
+        .spending-section h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+        }
+
+        .spend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg) 0;
+            border-bottom: 1px solid var(--gris-borde);
+            transition: all var(--transition-normal);
+        }
+
+        .spend-item:hover {
+            background: var(--primario-soft);
+            margin: 0 calc(var(--spacing-md) * -1);
+            padding: var(--spacing-lg) var(--spacing-md);
+        }
+
+        .spend-merchant {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            color: var(--negro);
+        }
+
+        .spend-date {
+            font-size: 0.75rem;
+            color: var(--gris-claro);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .spend-amount {
+            font-weight: 600;
+            color: var(--negro);
+        }
+
+        @media (max-width: 900px) {
+            .cards-management {
+                grid-template-columns: 1fr;
+            }
+
+            .card-visual {
+                max-width: 380px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: var(--spacing-xl) var(--spacing-lg);
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card-visual {
+                height: 200px;
+                padding: var(--spacing-lg);
+            }
+
+            .control-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">ATLAS BANK</div>
+        <div style="font-size: 0.8125rem; font-weight: 600;">TARJETAS / GESTIÓN</div>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <span class="section-label">[ Seguridad de Activos ]</span>
+            <h1>Mis Tarjetas</h1>
+        </div>
+
+        <div class="cards-management">
+            <section>
+                <div class="card-visual" id="physicalCard">
+                    <div class="card-header">
+                        <div class="card-logo">ATLAS</div>
+                        <div style="font-size: 0.75rem; text-transform: uppercase;">Débito</div>
+                    </div>
+                    <div class="card-number">**** **** **** 8821</div>
+                    <div class="card-footer">
+                        <div class="card-info">
+                            <div class="card-info-label">Titular</div>
+                            <div class="card-info-value">CARLOS SUSTENTABLE</div>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-info-label">Expira</div>
+                            <div class="card-info-value">12/28</div>
+                        </div>
+                        <div class="card-brand">VISA</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="controls-section">
+                <div class="control-item">
+                    <div class="control-label">
+                        <h3>Bloqueo Temporal</h3>
+                        <p>Desactiva compras y retiros al instante.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="control-item">
+                    <div class="control-label">
+                        <h3>Compras Internacionales</h3>
+                        <p>Permite transacciones en el extranjero.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="limit-section">
+                    <div class="limit-header">
+                        <span>Límite de Compra Diario</span>
+                        <span>$1,500 / $2,000</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="limit-section">
+                    <div class="limit-header">
+                        <span>Límite de Retiro ATM</span>
+                        <span>$500 / $800</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 62.5%;"></div>
+                    </div>
+                </div>
+
+                <div class="spending-section">
+                    <h2>Consumos Recientes</h2>
+                    <div class="spend-item">
+                        <div>
+                            <div class="spend-merchant">Amazon Prime</div>
+                            <div class="spend-date">20 Feb 2026 / 14:30</div>
+                        </div>
+                        <div class="spend-amount">-$15.99</div>
+                    </div>
+                    <div class="spend-item">
+                        <div>
+                            <div class="spend-merchant">Gasolinera Shell</div>
+                            <div class="spend-date">18 Feb 2026 / 10:15</div>
+                        </div>
+                        <div class="spend-amount">-$45.50</div>
+                    </div>
+                    <div class="spend-item">
+                        <div>
+                            <div class="spend-merchant">Netflix Suscripción</div>
+                            <div class="spend-date">15 Feb 2026 / 09:00</div>
+                        </div>
+                        <div class="spend-amount">-$12.99</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/common/cards.js" defer></script>
+</body>
+</html>

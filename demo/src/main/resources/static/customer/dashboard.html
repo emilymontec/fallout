@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Mi Cuenta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primario: #15803d;
+            --primario-soft: #f0fdf4;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-texto: #4b5563;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--blanco); color: var(--negro); }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%;
+            border-bottom: 1px solid var(--gris-borde);
+        }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 35px; height: 35px; background: var(--primario); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.8rem; }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            min-height: calc(100vh - 76px);
+        }
+
+        .main-panel {
+            padding: 5% 8%;
+            border-right: 1px solid var(--gris-borde);
+        }
+        .balance-label { font-size: 0.8rem; font-weight: 600; color: var(--primario); text-transform: uppercase; letter-spacing: 1px; }
+        .balance-amount { font-size: 4.5rem; font-weight: 600; letter-spacing: -3px; margin: 10px 0 40px; }
+
+        .transactions-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; border-bottom: 1px solid var(--negro); padding-bottom: 10px; display: inline-block; }
+
+        .transaction-item {
+            display: flex; justify-content: space-between; padding: 20px 0;
+            border-bottom: 1px solid var(--gris-borde);
+            font-size: 0.95rem;
+        }
+        .transaction-item .meta { color: var(--gris-texto); font-size: 0.8rem; text-transform: uppercase; }
+        .transaction-item .amount { font-weight: 600; }
+        .amount.negative { color: var(--negro); }
+        .amount.positive { color: var(--primario); }
+
+        .side-panel {
+            background-color: var(--primario-soft);
+            padding: 10% 12%;
+            display: flex; flex-direction: column; gap: 40px;
+        }
+
+        .impact-card {
+            background: var(--primario);
+            color: var(--blanco);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .impact-card h2 { font-size: 2.5rem; line-height: 1; margin-bottom: 10px; }
+        .impact-card p { font-size: 0.9rem; opacity: 0.8; }
+        .impact-card .icon-bg { position: absolute; right: -20px; bottom: -20px; font-size: 8rem; opacity: 0.1; transform: rotate(-15deg); }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .action-btn {
+            border: 1px solid var(--primario);
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--primario);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        .action-btn:hover { background: var(--primario); color: var(--blanco); }
+
+        .sidebar-nav { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+        .sidebar-nav a { text-decoration: none; color: var(--gris-texto); font-size: 0.85rem; font-weight: 600; transition: 0.2s; }
+        .sidebar-nav a:hover { color: var(--primario); padding-left: 5px; }
+
+        @media (max-width: 1024px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .main-panel { border-right: none; border-bottom: 1px solid var(--gris-borde); }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">BV. SYSTEM / <span style="font-weight: 300; color: var(--gris-texto);">DASHBOARD</span></div>
+    <div class="user-info">
+        <span style="font-size: 0.85rem; font-weight: 600;">CARLOS SUSTENTABLE</span>
+        <div class="avatar">CS</div>
+    </div>
+</header>
+
+<main class="dashboard">
+    <section class="main-panel">
+        <span class="balance-label">[ SALDO DISPONIBLE ]</span>
+        <h1 class="balance-amount">$12,450.00</h1>
+
+        <div class="transactions-title">Movimientos recientes</div>
+        
+        <div class="transaction-container">
+            <div class="transaction-item">
+                <div>
+                    <p>Supermercado Orgánico</p>
+                    <span class="meta">20 FEB 2026 / 14:30</span>
+                </div>
+                <div class="amount negative">-$85.20</div>
+            </div>
+            <div class="transaction-item">
+                <div>
+                    <p>Depósito Nómina BV</p>
+                    <span class="meta">15 FEB 2026 / 09:00</span>
+                </div>
+                <div class="amount positive">+$3,200.00</div>
+            </div>
+            <div class="transaction-item">
+                <div>
+                    <p>Suscripción Energía Eólica</p>
+                    <span class="meta">12 FEB 2026 / 10:15</span>
+                </div>
+                <div class="amount negative">-$40.00</div>
+            </div>
+            <div class="transaction-item">
+                <div>
+                    <p>Transferencia Recibida</p>
+                    <span class="meta">10 FEB 2026 / 18:45</span>
+                </div>
+                <div class="amount positive">+$150.00</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="side-panel">
+        <div class="impact-card">
+            <p>IMPACTO ACUMULADO</p>
+            <h2>14.2 kg</h2>
+            <p>CO2 evitado este mes mediante tus inversiones en proyectos verdes.</p>
+            <div class="icon-bg">🌿</div>
+        </div>
+
+        <div>
+            <p style="font-size: 0.8rem; font-weight: 600; margin-bottom: 15px; letter-spacing: 1px;">OPERACIONES RÁPIDAS</p>
+            <div class="quick-actions">
+                <a href="/customer/transferencias.html" class="action-btn">Transferir</a>
+                <a href="#" class="action-btn">Pagar</a>
+                <a href="#" class="action-btn">Invertir</a>
+                <a href="/customer/movimientos.html" class="action-btn">Extractos</a>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/customer/cuentas.html">GESTIÓN DE CUENTAS</a>
+            <a href="/customer/seguridad.html">SEGURIDAD Y LLAVES</a>
+            <a href="/auth/login.html" style="color: #ef4444;">CERRAR SESIÓN SEGURA</a>
+        </nav>
+    </section>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Gestión de Usuarios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primario: #15803d;
+            --alerta: #b91c1c;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-fondo: #f9fafb;
+            --gris-texto: #6b7280;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--gris-fondo); color: var(--negro); font-size: 13px; }
+
+        /* NAV SUPERIOR DE SISTEMA */
+        header {
+            background: var(--negro); color: white;
+            padding: 10px 25px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .sys-status { font-size: 0.65rem; letter-spacing: 1px; color: var(--primario); font-weight: 600; }
+
+        /* LAYOUT ADMIN */
+        .admin-wrapper { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+        
+        aside { background: var(--blanco); border-right: 1px solid var(--gris-borde); padding: 30px 20px; }
+        .menu-label { font-size: 0.65rem; font-weight: 700; color: var(--gris-texto); text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .menu-link { display: block; padding: 10px 0; text-decoration: none; color: var(--negro); font-weight: 500; border-bottom: 1px solid var(--gris-fondo); }
+        .menu-link:hover { color: var(--primario); }
+        .menu-link.active { color: var(--primario); font-weight: 600; }
+
+        /* CONTENIDO */
+        section { padding: 40px; }
+        .page-title { margin-bottom: 30px; }
+        .page-title h1 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .page-title p { font-size: 0.8rem; color: var(--gris-texto); }
+
+        /* TABLAS DE GESTIÓN */
+        .table-section { background: white; border: 1px solid var(--gris-borde); margin-bottom: 40px; }
+        .table-header { padding: 20px; border-bottom: 1px solid var(--gris-borde); display: flex; justify-content: space-between; align-items: center; }
+        .table-header h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .table-tools { display: flex; gap: 10px; }
+        .btn-tool {
+            padding: 8px 16px;
+            border: 1px solid var(--negro);
+            background: white;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.2s;
+        }
+        .btn-tool:hover { background: var(--negro); color: white; }
+        .btn-tool.add { border-color: var(--primario); color: var(--primario); }
+        .btn-tool.add:hover { background: var(--primario); color: white; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { background: var(--gris-fondo); text-align: left; padding: 12px 20px; font-size: 0.7rem; text-transform: uppercase; color: var(--gris-texto); border-bottom: 1px solid var(--gris-borde); }
+        td { padding: 15px 20px; border-bottom: 1px solid var(--gris-fondo); }
+        tr:hover { background: #fafafa; }
+
+        /* ACCIONES */
+        .btn-action { 
+            padding: 6px 12px; 
+            border: 1px solid var(--negro); 
+            background: white;
+            font-size: 0.65rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            margin-right: 5px;
+        }
+        .btn-action:hover { background: var(--negro); color: white; }
+        .btn-action.approve { border-color: var(--primario); color: var(--primario); }
+        .btn-action.approve:hover { background: var(--primario); color: white; }
+        .btn-action.delete { border-color: var(--alerta); color: var(--alerta); }
+        .btn-action.delete:hover { background: var(--alerta); color: white; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-active { background: #dcfce7; color: #166534; }
+        .status-inactive { background: #fee2e2; color: #991b1b; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+
+        @media (max-width: 900px) {
+            .admin-wrapper { grid-template-columns: 1fr; }
+            aside { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>BV. ADMINISTRATION / USERS_MANAGEMENT_v2</div>
+    <div class="sys-status">● SISTEMA OPERATIVO : 20 FEB 2026</div>
+</header>
+
+<div class="admin-wrapper">
+    <aside>
+        <span class="menu-label">Usuarios</span>
+        <a href="/admin/admin_directorio.html" class="menu-link active">Directorio General</a>
+        <a href="/admin/admin_aprobaciones.html" class="menu-link">Aprobaciones Pendientes</a>
+        
+        <br>
+        <span class="menu-label">Operaciones</span>
+        <a href="/admin/panel_admin.html" class="menu-link">Panel Principal</a>
+        <a href="/admin/admin_transacciones.html" class="menu-link">Monitor de Transacciones</a>
+    </aside>
+
+    <section>
+        <div class="page-title">
+            <h1>Gestión de Usuarios</h1>
+            <p>Base de datos completa de clientes y administradores del sistema BV</p>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <h2>Clientes Registrados</h2>
+                <div class="table-tools">
+                    <button class="btn-tool add">+ Nuevo Usuario</button>
+                    <button class="btn-tool">Exportar CSV</button>
+                    <button class="btn-tool">Filtrar</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre / Usuario</th>
+                        <th>Email</th>
+                        <th>Documento</th>
+                        <th>Cuenta Principal</th>
+                        <th>Estado</th>
+                        <th>Fecha Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Carlos Sustentable</strong><br><span style="font-size: 0.8rem; color: var(--gris-texto);">carlos.s</span></td>
+                        <td>carlos.s@biodomain.com</td>
+                        <td>12345678-A</td>
+                        <td>8821 0092 11</td>
+                        <td><span class="status-badge status-active">Activo</span></td>
+                        <td>15/01/2026</td>
+                        <td>
+                            <button class="btn-action">Ver</button>
+                            <button class="btn-action">Editar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lucía Fernández</strong><br><span style="font-size: 0.8rem; color: var(--gris-texto);">l.fernandez</span></td>
+                        <td>l.fernandez@mail.com</td>
+                        <td>87654321-B</td>
+                        <td>4402 9182 00</td>
+                        <td><span class="status-badge status-active">Activo</span></td>
+                        <td>20/02/2026</td>
+                        <td>
+                            <button class="btn-action">Ver</button>
+                            <button class="btn-action">Editar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inversiones Norte S.L.</strong><br><span style="font-size: 0.8rem; color: var(--gris-texto);">admin@norte</span></td>
+                        <td>admin@norte.com</td>
+                        <td>XX999999</td>
+                        <td>3301 2002 55</td>
+                        <td><span class="status-badge status-pending">En Revisión</span></td>
+                        <td>19/02/2026</td>
+                        <td>
+                            <button class="btn-action approve">Aprobar</button>
+                            <button class="btn-action delete">Rechazar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Elena Vergel</strong><br><span style="font-size: 0.8rem; color: var(--gris-texto);">elena.v</span></td>
+                        <td>elena.v@greenmail.es</td>
+                        <td>45632178-C</td>
+                        <td>2201 4455 88</td>
+                        <td><span class="status-badge status-inactive">Inactivo</span></td>
+                        <td>05/01/2026</td>
+                        <td>
+                            <button class="btn-action">Ver</button>
+                            <button class="btn-action">Reactivar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; color: var(--gris-texto); font-size: 0.8rem; padding: 20px;">
+            Mostrando 4 de 1,240 usuarios • <a href="#" style="color: var(--primario); text-decoration: none;">Ver todos</a>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

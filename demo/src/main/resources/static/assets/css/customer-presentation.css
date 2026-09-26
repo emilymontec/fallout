@@ -1,0 +1,158 @@
+:root {
+    --surface: #ffffff;
+}
+
+body {
+    background: var(--bg-alt);
+    color: var(--text-main);
+}
+
+header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    box-shadow: var(--shadow-sm);
+}
+
+header .logo {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.03em !important;
+}
+
+.back-link {
+    color: var(--text-muted) !important;
+    transition: var(--transition);
+}
+
+.back-link:hover {
+    color: var(--primary) !important;
+}
+
+main {
+    padding: 48px 5% !important;
+}
+
+h1 {
+    font-size: clamp(2rem, 4vw, 3rem) !important;
+    letter-spacing: -0.03em !important;
+    color: var(--bg-dark) !important;
+}
+
+h2 {
+    letter-spacing: -0.02em !important;
+}
+
+p,
+label,
+small {
+    color: var(--text-muted);
+}
+
+.account-card,
+.table-container,
+.toolbar,
+.settings-section,
+.form-card,
+.goal-card,
+.summary-card,
+.activity-table-container,
+.stat-card,
+.cert-card,
+.error-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--border) !important;
+}
+
+.main-content,
+.settings-content,
+.content-panel,
+.side-panel,
+.main-form,
+.summary-side {
+    background: transparent !important;
+}
+
+.settings-nav,
+.sidebar,
+.summary-card,
+.activity-table-container,
+.table-container,
+.toolbar,
+.goal-card {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+}
+
+.settings-nav a,
+.sidebar-link {
+    border-radius: var(--radius-md);
+}
+
+.settings-nav a.active,
+.sidebar-link.active {
+    color: var(--primary) !important;
+    background: var(--primary-soft) !important;
+    border-right-color: var(--primary) !important;
+}
+
+.form-control,
+input,
+select,
+textarea {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-md) !important;
+    background: var(--surface) !important;
+    color: var(--text-main) !important;
+    padding: 0.75rem 0.9rem !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px var(--primary-soft) !important;
+}
+
+.btn-save,
+.btn-create,
+.btn-tool,
+.btn-modal,
+.btn {
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    transition: var(--transition);
+}
+
+.btn-save,
+.btn-create,
+.btn-modal,
+.btn-primary {
+    background: var(--bg-dark) !important;
+    color: var(--text-on-dark) !important;
+}
+
+.btn-save:hover,
+.btn-create:hover,
+.btn-modal:hover,
+.btn-primary:hover {
+    background: var(--primary) !important;
+}
+
+.btn-outline,
+.btn-tool {
+    background: var(--surface) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border) !important;
+}
+
+.btn-outline:hover,
+.btn-tool:hover {
+    border-color: var(--bg-dark) !important;
+    background: var(--bg-alt) !important;
+    color: var(--text-main) !important;
+}

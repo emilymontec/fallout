@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Error 404</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primario: #15803d;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-texto: #6b7280;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--blanco); color: var(--negro); }
+
+        .status-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-code {
+            font-size: 25vw;
+            line-height: 1;
+            letter-spacing: -1.5vw;
+            color: #f3f4f6;
+            position: absolute;
+            z-index: -1;
+            font-weight: 600;
+        }
+
+        .error-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--primario);
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            letter-spacing: -3px;
+            line-height: 0.9;
+            margin-bottom: 25px;
+            color: var(--negro);
+            max-width: 600px;
+        }
+
+        p {
+            color: var(--gris-texto);
+            max-width: 450px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+        }
+
+        .btn-home {
+            text-decoration: none;
+            padding: 18px 40px;
+            background: var(--negro);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-home:hover {
+            background: var(--primario);
+        }
+
+        .footer-text {
+            position: absolute;
+            bottom: 50px;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="status-container">
+    <div class="bg-code">404</div>
+
+    <p class="error-label">[ ERROR DE LOCALIZACIÓN ]</p>
+
+    <h2>ESTA RUTA NO<br>EXISTE EN EL SISTEMA.</h2>
+
+    <p>Es posible que la dirección sea incorrecta o que la página haya sido migrada a una nueva sección de la banca.</p>
+
+    <a href="/" class="btn-home">Regresar al Panel Principal</a>
+
+    <div class="footer-text">
+        BV. SYSTEM CORE / NODE_REF: NULL_PAGE
+    </div>
+</div>
+
+</body>
+</html>

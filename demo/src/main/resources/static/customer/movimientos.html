@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Historial de Movimientos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+        :root {
+            --primario: #15803d;
+            --primario-soft: #f0fdf4;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-texto: #4b5563;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--blanco); color: var(--negro); }
+
+        header {
+            padding: 20px 5%;
+            border-bottom: 1px solid var(--gris-borde);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        main { padding: 60px 8%; max-width: 1200px; margin: 0 auto; }
+
+        .section-intro { margin-bottom: 40px; }
+        .section-intro h1 { font-size: 3rem; letter-spacing: -2px; margin-bottom: 10px; }
+        .section-intro p { color: var(--gris-texto); font-size: 1.1rem; }
+
+        .filter-bar {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gris-borde);
+            flex-wrap: wrap;
+        }
+
+        .filter-group { flex: 1; min-width: 200px; }
+        .filter-group label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--gris-texto); }
+        .filter-group select, .filter-group input { width: 100%; padding: 12px; border: 1px solid var(--gris-borde); outline: none; }
+
+        .ledger-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .ledger-table th {
+            text-align: left;
+            padding: 15px 10px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--negro);
+            color: var(--gris-texto);
+        }
+        .ledger-table td {
+            padding: 25px 10px;
+            border-bottom: 1px solid var(--gris-borde);
+            font-size: 0.95rem;
+        }
+
+        .amount-cell { font-weight: 600; text-align: right; }
+        .amount-positive { color: var(--primario); }
+        .amount-negative { color: var(--negro); }
+
+        .badge-type {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            background: var(--gris-borde);
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .filter-bar { flex-direction: column; }
+            .ledger-table thead { display: none; }
+            .ledger-table tr { display: block; margin-bottom: 20px; border: 1px solid var(--gris-borde); padding: 15px; }
+            .ledger-table td { display: flex; justify-content: space-between; padding: 10px 0; border: none; }
+            .ledger-table td::before { content: attr(data-label); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo"><a href="/customer/dashboard.html">AtlasBank</a></div>
+    <nav style="display: flex; gap: 30px; align-items: center;">
+        <a href="/customer/dashboard.html" style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Dashboard</a>
+        <a href="/customer/cuentas.html" style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">Mis Cuentas</a>
+    </nav>
+</header>
+
+<main>
+    <section class="section-intro">
+        <h1>Libro de Movimientos</h1>
+        <p>Consulta el historial detallado de todas tus transacciones certificadas.</p>
+    </section>
+
+    <section class="filter-bar">
+        <div class="filter-group">
+            <label>Filtrar por cuenta</label>
+            <select id="accountFilter">
+                <option value="all">Todas las cuentas</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Tipo de Operación</label>
+            <select id="typeFilter">
+                <option value="all">Todas</option>
+                <option value="DEPOSIT">Depósitos</option>
+                <option value="WITHDRAW">Retiros / Pagos</option>
+                <option value="TRANSFER">Transferencias</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Desde</label>
+            <input type="date" id="dateFrom">
+        </div>
+    </section>
+
+    <table class="ledger-table">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Operación</th>
+                <th>Referencia / Descripción</th>
+                <th>Estado</th>
+                <th style="text-align: right;">Monto</th>
+            </tr>
+        </thead>
+        <tbody id="transactionsBody">
+            <!-- Movimientos cargados aquí -->
+        </tbody>
+    </table>
+</main>
+
+<script>
+const customerId = sessionStorage.getItem('customerId');
+if (!customerId) window.location.href = '/auth/login.html';
+
+document.getElementById('customerIdDisplay').textContent = customerId;
+
+let allTransactions = [];
+
+async function loadTransactions() {
+    try {
+        const accRes = await fetch(`/api/accounts/customer/${customerId}`);
+        if (accRes.ok) {
+            const accounts = await accRes.json();
+            const filter = document.getElementById('accountFilter');
+            accounts.forEach(acc => {
+                const opt = document.createElement('option');
+                opt.value = acc.id;
+                opt.textContent = `${acc.accountNumber} (${acc.type})`;
+                filter.appendChild(opt);
+            });
+            
+            // Initial load of all txs
+            loadTransactions();
+        }
+    } catch (err) { console.error(err); }
+}
+
+async function loadTransactions() {
+    const accountId = document.getElementById('accountFilter').value;
+    const type = document.getElementById('typeFilter').value;
+    
+    try {
+        let url = '/api/transactions';
+        if (accountId !== 'all') {
+            url = `/api/transactions/account/${accountId}`;
+        }
+        
+        const res = await fetch(url);
+        if (res.ok) {
+            let txs = await res.json();
+            
+            // Filter by type if needed (since backend might not support it directly)
+            if (type !== 'all') {
+                txs = txs.filter(t => t.type === type);
+            }
+            
+            const tbody = document.getElementById('transactionsBody');
+            tbody.innerHTML = '';
+            
+            if (txs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--gris-texto);">No hay movimientos registrados con estos criterios.</td></tr>';
+                return;
+            }
+
+            txs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(tx => {
+                const tr = document.createElement('tr');
+                const isPositive = tx.type === 'DEPOSIT';
+                
+                tr.innerHTML = `
+                    <td data-label="Fecha">${new Date(tx.createdAt).toLocaleDateString()}</td>
+                    <td data-label="Operación"><span class="badge-type">${tx.type}</span></td>
+                    <td data-label="Referencia">${tx.description || 'Procesamiento de Red'}</td>
+                    <td data-label="Estado"><span style="color:var(--primario); font-size:0.7rem; font-weight:700;">● CERTIFICADO</span></td>
+                    <td data-label="Monto" class="amount-cell ${isPositive ? 'amount-positive' : 'amount-negative'}">
+                        ${isPositive ? '+' : '-'}$${tx.amount.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    } catch (err) { console.error(err); }
+}
+
+document.getElementById('accountFilter').addEventListener('change', loadTransactions);
+document.getElementById('typeFilter').addEventListener('change', loadTransactions);
+
+loadData();
+</script>
+</body>
+</html>

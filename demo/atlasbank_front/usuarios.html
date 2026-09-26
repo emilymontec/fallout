@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Configuración</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primario: #15803d;
+            --primario-soft: #f0fdf4;
+            --alerta: #ef4444;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-texto: #6b7280;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--blanco); color: var(--negro); }
+
+        header { padding: 20px 5%; border-bottom: 1px solid var(--gris-borde); display: flex; justify-content: space-between; align-items: center; }
+        
+        main { 
+            display: grid; 
+            grid-template-columns: 300px 1fr; 
+            min-height: calc(100vh - 76px);
+        }
+
+        /* NAVEGACIÓN LATERAL AJUSTES */
+        .settings-nav {
+            padding: 40px 15% 40px 5%;
+            border-right: 1px solid var(--gris-borde);
+            background: var(--gris-fondo);
+        }
+        .settings-nav a {
+            display: block;
+            text-decoration: none;
+            color: var(--gris-texto);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .settings-nav a.active { color: var(--primario); border-right: 2px solid var(--primario); }
+        .settings-nav a.logout { color: var(--alerta); margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--gris-borde); }
+
+        /* CONTENIDO DE CONFIGURACIÓN */
+        .settings-content { padding: 60px 10%; }
+        .settings-section { margin-bottom: 80px; max-width: 600px; }
+        .settings-section h2 { font-size: 1.8rem; letter-spacing: -1px; margin-bottom: 30px; border-bottom: 1px solid var(--negro); padding-bottom: 10px; }
+
+        /* FORMULARIOS */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--gris-texto); }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--gris-borde);
+            font-size: 0.95rem;
+            outline: none;
+        }
+        input:focus { border-color: var(--primario); background: var(--primario-soft); }
+        input[disabled] { background: #f3f4f6; cursor: not-allowed; border-color: transparent; }
+
+        .btn-save {
+            padding: 14px 28px;
+            background: var(--negro);
+            color: white;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-save:hover { background: var(--primario); }
+
+        .security-info {
+            background: var(--primario-soft);
+            padding: 20px;
+            font-size: 0.85rem;
+            border-left: 4px solid var(--primario);
+            margin-top: 20px;
+            color: var(--primario);
+        }
+
+        @media (max-width: 900px) {
+            main { grid-template-columns: 1fr; }
+            .settings-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">BV. SYSTEM</div>
+    <div style="font-size: 0.8rem; font-weight: 600;">CONFIGURACIÓN DE PERFIL</div>
+</header>
+
+<main>
+    <aside class="settings-nav">
+        <a href="#" class="active">Datos Personales</a>
+        <a href="#">Seguridad</a>
+        <a href="#">Notificaciones</a>
+        <a href="#">Privacidad</a>
+        <a href="#" class="logout">Finalizar Sesión</a>
+    </aside>
+
+    <section class="settings-content">
+        <div class="settings-section">
+            <span style="font-size: 0.7rem; font-weight: 600; color: var(--primario);">[ REF: USER_DATA_01 ]</span>
+            <h2>Datos Personales</h2>
+            
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre(s)</label>
+                        <input type="text" value="Carlos" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <input type="text" value="Sustentable" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" value="carlos.s@bio-mail.com">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono Vinculado</label>
+                    <input type="text" value="+34 600 000 000">
+                </div>
+                <button type="button" class="btn-save">Actualizar Datos</button>
+            </form>
+        </div>
+
+        <div class="settings-section">
+            <span style="font-size: 0.7rem; font-weight: 600; color: var(--primario);">[ REF: SEC_AUTH_02 ]</span>
+            <h2>Seguridad</h2>
+            
+            <form>
+                <div class="form-group">
+                    <label>Contraseña Actual</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label>Nueva Contraseña</label>
+                    <input type="password" placeholder="Mínimo 12 caracteres">
+                </div>
+                <div class="form-group">
+                    <label>Confirmar Nueva Contraseña</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <button type="button" class="btn-save">Cambiar Contraseña</button>
+            </form>
+
+            <div class="security-info">
+                <strong>Recomendación:</strong> Tu contraseña fue actualizada hace 45 días. El sistema sugiere renovarla cada 90 días para mantener la integridad de tu cuenta.
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

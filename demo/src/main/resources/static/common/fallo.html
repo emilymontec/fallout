@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Error de Transferencia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        :root {
+            --primario: #15803d;
+            --alerta: #ef4444;
+            --negro: #111827;
+        }
+        body { background: var(--blanco); }
+        .status-container { text-align: center; padding: 100px 5%; }
+        .error-icon { color: #ef4444; font-size: 6rem; line-height: 1; margin-bottom: 10px; }
+        .error-label { text-transform: uppercase; letter-spacing: 2px; font-weight: 600; color: #ef4444; margin-bottom: 20px; display: block; }
+        h1 { font-size: 3.5rem; letter-spacing: -3px; line-height: 0.9; margin-bottom: 25px; color: #111827; }
+        p { color: #6b7280; max-width: 420px; margin: 0 auto 40px; font-size: 1.1rem; }
+        .btn-group { display: flex; gap: 15px; justify-content: center; }
+        .btn-outline { text-decoration: none; padding: 18px 30px; border: 1px solid #111827; color: #111827; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        .btn-outline:hover { background: #111827; color: white; }
+        .btn-primary { text-decoration: none; padding: 18px 30px; background: #111827; color: white; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        .btn-primary:hover { background: #15803d; }
+    </style>
+</head>
+<body>
+    <div class="status-container">
+        <div class="error-icon">✕</div>
+        <span class="error-label">[ ERROR DE TRANSFERENCIA ]</span>
+        <h1>OPERACIÓN<br>INTERRUMPIDA.</h1>
+        <p>No pudimos completar la transacción. Esto puede deberse a límites diarios excedidos o problemas de red.</p>
+        <div class="btn-group">
+            <a href="/customer/transferencias.html" class="btn-outline">Revisar Datos</a>
+            <a href="/customer/dashboard.html" class="btn-primary">Reintentar Pago</a>
+        </div>
+    </div>
+</body>
+</html>

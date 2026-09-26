@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BV. SYSTEM | Gestión de Tarjetas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primario: #15803d;
+            --alerta: #b91c1c;
+            --negro: #111827;
+            --blanco: #ffffff;
+            --gris-borde: #e5e7eb;
+            --gris-fondo: #f9fafb;
+            --gris-texto: #6b7280;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+        body { background: var(--blanco); color: var(--negro); }
+
+        header { padding: 20px 5%; border-bottom: 1px solid var(--gris-borde); display: flex; justify-content: space-between; align-items: center; }
+        main { padding: 60px 8%; max-width: 1200px; margin: 0 auto; }
+
+        .section-header { margin-bottom: 50px; }
+        .section-header h1 { font-size: 3rem; letter-spacing: -2px; }
+
+        .card-management-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 60px;
+        }
+
+        /* VISUALIZACIÓN DE TARJETA */
+        .card-visual {
+            width: 100%;
+            height: 240px;
+            background: var(--negro);
+            border-radius: 16px;
+            padding: 30px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: 0.5s;
+        }
+        .card-visual.blocked { filter: grayscale(1) opacity(0.6); }
+        .card-visual.blocked::after {
+            content: "BLOQUEADA";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            border: 4px solid var(--alerta);
+            color: var(--alerta);
+            padding: 10px 20px;
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        .card-logo { font-weight: 600; font-size: 1rem; color: var(--primario); }
+        .card-number { font-size: 1.4rem; letter-spacing: 3px; word-spacing: 10px; margin-top: 40px; }
+        .card-info { display: flex; justify-content: space-between; align-items: flex-end; }
+        .card-info label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.6; display: block; margin-bottom: 4px; }
+        .card-info p { font-size: 0.8rem; font-weight: 500; }
+
+        /* CONTROLES */
+        .controls { margin-top: 40px; border-top: 1px solid var(--gris-borde); padding-top: 30px; }
+        .control-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .control-label h3 { font-size: 1rem; font-weight: 600; }
+        .control-label p { font-size: 0.8rem; color: var(--gris-texto); }
+
+        /* TOGGLE SWITCH */
+        .switch {
+            position: relative; display: inline-block; width: 50px; height: 26px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--gris-borde); transition: .4s; border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+            background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primario); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* LÍMITES */
+        .limit-box { margin-bottom: 40px; }
+        .limit-header { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; margin-bottom: 10px; }
+        .progress-bar { width: 100%; height: 8px; background: var(--gris-borde); }
+        .progress-fill { height: 100%; background: var(--primario); width: 65%; }
+
+        /* TABLA DE CONSUMOS */
+        .recent-spending h2 { font-size: 1.2rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .spend-item {
+            display: flex; justify-content: space-between; padding: 15px 0;
+            border-bottom: 1px solid var(--gris-borde);
+        }
+        .spend-item .merchant { font-weight: 600; font-size: 0.95rem; }
+        .spend-item .date { font-size: 0.8rem; color: var(--gris-texto); }
+        .spend-item .amount { font-weight: 600; }
+
+        @media (max-width: 900px) {
+            .card-management-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">BV. SYSTEM</div>
+    <div style="font-size: 0.8rem; font-weight: 600;">TARJETAS / GESTIÓN</div>
+</header>
+
+<main>
+    <div class="section-header">
+        <p style="color: var(--primario); font-weight: 600; margin-bottom: 10px;">[ SEGURIDAD DE ACTIVOS ]</p>
+        <h1>Mis Tarjetas</h1>
+    </div>
+
+    <div class="card-management-grid">
+        <section>
+            <div class="card-visual" id="physicalCard">
+                <div class="card-logo">BV. DEBIT</div>
+                <div class="card-number">**** **** **** 8821</div>
+                <div class="card-info">
+                    <div>
+                        <label>Titular</label>
+                        <p>CARLOS SUSTENTABLE</p>
+                    </div>
+                    <div>
+                        <label>Expira</label>
+                        <p>12/28</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="font-size: 1.2rem; font-weight: 600;">VISA</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-item">
+                    <div class="control-label">
+                        <h3>Bloqueo Temporal</h3>
+                        <p>Desactiva compras y retiros al instante.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="blockToggle" onchange="toggleCard()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="limit-box">
+                    <div class="limit-header">
+                        <span>LÍMITE MENSUAL DISPONIBLE</span>
+                        <span>$3,250 / $5,000</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <button style="width: 100%; padding: 15px; border: 1px solid var(--negro); background: none; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.8rem;">
+                    Configurar Límites Diarios
+                </button>
+            </div>
+        </section>
+
+        <section class="recent-spending">
+            <h2>Últimos Consumos</h2>
+            
+            <div class="spend-item">
+                <div>
+                    <p class="merchant">Restaurante La Huerta</p>
+                    <p class="date">Hoy, 14:20 • Alimentos</p>
+                </div>
+                <p class="amount">-$42.00</p>
+            </div>
+
+            <div class="spend-item">
+                <div>
+                    <p class="merchant">Apple Services</p>
+                    <p class="date">Ayer, 09:00 • Entretenimiento</p>
+                </div>
+                <p class="amount">-$9.99</p>
+            </div>
+
+            <div class="spend-item">
+                <div>
+                    <p class="merchant">Gasolinera BioFree</p>
+                    <p class="date">18 Feb 2026 • Transporte</p>
+                </div>
+                <p class="amount">-$65.40</p>
+            </div>
+
+            <div class="spend-item">
+                <div>
+                    <p class="merchant">Amazon México</p>
+                    <p class="date">15 Feb 2026 • Compras</p>
+                </div>
+                <p class="amount">-$120.00</p>
+            </div>
+
+            <a href="#" style="display: block; margin-top: 30px; color: var(--primario); font-weight: 600; text-decoration: none; font-size: 0.85rem;">VER TODO EL HISTORIAL DE TARJETA →</a>
+        </section>
+    </div>
+</main>
+
+<script>
+    function toggleCard() {
+        const card = document.getElementById('physicalCard');
+        const isChecked = document.getElementById('blockToggle').checked;
+        if(isChecked) {
+            card.classList.add('blocked');
+        } else {
+            card.classList.remove('blocked');
+        }
+    }
+</script>
+
+</body>
+</html>

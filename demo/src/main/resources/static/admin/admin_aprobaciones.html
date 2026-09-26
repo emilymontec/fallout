@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtlasBank Admin | Aprobaciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<div class="app-container">
+    <aside class="app-sidebar">
+        <div class="logo" style="color: white; margin-bottom: 2rem;">Atlas<span style="color: var(--primary-light);">Bank</span></div>
+        
+        <nav class="sidebar-nav">
+            <span class="label" style="color: rgba(255,255,255,0.4); margin-bottom: 0.5rem; display: block;">Navegación</span>
+            <a href="/admin/panel_admin.html" class="sidebar-link">📊 Dashboard Principal</a>
+            
+            <span class="label" style="color: rgba(255,255,255,0.4); margin-top: 1.5rem; margin-bottom: 0.5rem; display: block;">Gestión de Usuarios</span>
+            <a href="/admin/admin_directorio.html" class="sidebar-link">👥 Directorio General</a>
+            <a href="/admin/admin_aprobaciones.html" class="sidebar-link active">✅ Aprobaciones (<span id="pendingCount">0</span>)</a>
+
+            <span class="label" style="color: rgba(255,255,255,0.4); margin-top: 1.5rem; margin-bottom: 0.5rem; display: block;">Operaciones</span>
+            <a href="/admin/admin_transacciones.html" class="sidebar-link">📈 Monitor Financiero</a>
+            <a href="/admin/admin_simulador.html" class="sidebar-link">🧪 Simulador de Depósito</a>
+
+            <span class="label" style="color: rgba(255,255,255,0.4); margin-top: 1.5rem; margin-bottom: 0.5rem; display: block;">Seguridad y Cuenta</span>
+            <a href="/admin/admin_seguridad.html" class="sidebar-link">🔒 Control de Seguridad</a>
+            <a href="/admin/admin_perfil.html" class="sidebar-link">👤 Mi Perfil</a>
+            <a href="/admin/admin_configuracion.html" class="sidebar-link">⚙️ Configuración</a>
+        </nav>
+
+        <div style="margin-top: auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div id="adminDisplay" style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 1rem;">Admin Terminal</div>
+            <button onclick="sessionStorage.clear(); window.location.href='/auth/login.html'; return false;" class="btn btn-outline" style="width: 100%; color: white; border-color: rgba(255,255,255,0.2);">Cerrar Sesión</button>
+        </div>
+    </aside>
+
+    <main class="app-content">
+        <header class="content-header">
+            <div>
+                <h1 style="font-size: 1.75rem;">Aprobaciones Pendientes</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Validación de nuevas solicitudes de apertura de cuenta. <span id="currentDate"></span></p>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2 style="font-size: 1rem;">Solicitudes en Espera</h2>
+            </div>
+            <table class="app-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="pendingTableBody">
+                    <tr><td colspan="5" style="text-align:center; padding:40px; color: var(--text-muted);">No hay registros pendientes.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<script>
+document.getElementById('adminDisplay').textContent = `Admin: ${sessionStorage.getItem('adminUser') || 'Executive'}`;
+document.getElementById('currentDate').textContent = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+
+async function loadData() {
+    try {
+        const statsRes = await fetch('/api/admin/stats');
+        if (statsRes.ok) {
+            const stats = await statsRes.json();
+            document.getElementById('pendingCount').textContent = stats.pendingAccounts;
+        }
+
+        const res = await fetch('/api/admin/customers');
+        if (res.ok) {
+            const customers = await res.json();
+            const tbody = document.getElementById('pendingTableBody');
+            const pending = customers.filter(c => c.status === 'PENDING');
+            
+            if (pending.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px;">No hay registros pendientes.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            pending.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${c.id}</td>
+                    <td style="font-family: monospace;">${c.customerId || c.id}</td>
+                    <td><strong>${c.fullName}</strong></td>
+                    <td style="color: var(--text-muted);">${c.email}</td>
+                    <td><button onclick="updateStatus(${c.id}, 'ACTIVE')" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.75rem;">Aprobar Cuenta</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    } catch (err) { console.error(err); }
+}
+
+async function updateStatus(id, newStatus) {
+    if (!confirm(`¿Cambiar estado a ${newStatus}?`)) return;
+    try {
+        const res = await fetch(`/api/admin/customers/${id}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+        });
+        if (res.ok) loadData();
+    } catch (err) { alert('Error al actualizar'); }
+}
+
+loadData();
+</script>
+</body>
+</html>
