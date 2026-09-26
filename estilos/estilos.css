@@ -165,6 +165,65 @@ footer {
 .frow a:hover { border-color: var(--blue); }
 .copyright { font-size: .8rem; color: var(--blue-soft); border-top: 1px solid var(--blue-line); padding-top: 18px; margin: 0; }
 
+/* ── how-to-use steps ───────────────────────────────── */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4vw, 36px);
+}
+.step {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: clamp(16px, 2.5vw, 28px);
+  align-items: start;
+}
+.step-num {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--blue-line);
+  line-height: 1;
+  padding-top: 3px;
+  letter-spacing: -.02em;
+}
+.step-body { border-top: 1px solid var(--blue-line); padding-top: 14px; }
+.step-title {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin: 0 0 10px;
+}
+.step-note {
+  font-size: .88rem;
+  color: var(--blue-soft);
+  font-weight: 400;
+  margin: 8px 0 0;
+}
+pre.cmd {
+  margin: 0;
+  background: var(--wash);
+  border: 1px solid var(--blue-line);
+  border-radius: 6px;
+  padding: 12px 16px;
+  overflow-x: auto;
+}
+pre.cmd code {
+  font-family: 'Menlo', 'Consolas', 'Monaco', monospace;
+  font-size: .85rem;
+  color: var(--blue-deep);
+  white-space: pre;
+}
+.step-body .step-note code {
+  font-family: 'Menlo', 'Consolas', 'Monaco', monospace;
+  font-size: .83rem;
+  background: var(--wash);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--blue);
+}
+
 /* ── responsive ─────────────────────────────────────── */
 @media (max-width: 900px) {
   .trio { grid-template-columns: repeat(2, 1fr); }
@@ -175,4 +234,6 @@ footer {
   .frow-group { grid-template-columns: 1fr; }
   .hero-foot { flex-direction: column; align-items: flex-start; gap: 16px; }
   .sub-p { text-align: left; max-width: 100%; }
+  .step { grid-template-columns: 2.2rem 1fr; gap: 12px; }
+  .step-num { font-size: 1.1rem; }
 }

@@ -14,11 +14,11 @@
 `fallout` scans any local Git project for the impact of a change — broken imports, drifted docs, untested modules — then hands the result to **IBM Bob** to complete the review.
 
 ```
-node bin/guardian.mjs analyze [--repo DIR]        →  analyse one project
-node bin/guardian.mjs scan <folder>               →  risk report for every repo in the folder
-node bin/guardian.mjs prompt --repo <path>        →  analysis + message ready to paste into Bob
-node bin/guardian.mjs install-modes               →  install Bob modes (once)
-Bob (PR Guardian mode)                            →  3 parallel subagents → verdict + fix branch
+node bin/guardian.mjs analyze --repo <path>          →  analyse one project
+node bin/guardian.mjs scan <path>                    →  risk report for every repo in the folder
+node bin/guardian.mjs prompt --repo <path> --copy    →  analysis + message ready to paste into Bob
+node bin/guardian.mjs install-modes                  →  install Bob modes (once)
+Bob (PR Guardian mode)                               →  3 parallel subagents → verdict + fix branch
 ```
 
 ---
